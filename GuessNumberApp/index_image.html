@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Перший рівень</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; }
+        img { max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <h1>Завантажене зображення:</h1>
+    <div id="container">Завантаження...</div>
+
+    <script>
+        fetch('image_data.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Не вдалося завантажити файл");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const container = document.getElementById('container');
+                
+                const imgElement = document.createElement('img');
+                imgElement.src = data.imageUrl;
+                imgElement.alt = data.description;
+                
+                container.innerHTML = '';
+                container.appendChild(imgElement);
+                
+                const caption = document.createElement('p');
+                caption.innerText = data.description;
+                container.appendChild(caption);
+            })
+            .catch(error => {
+                console.error('Помилка:', error);
+                document.getElementById('container').innerText = "Помилка завантаження даних.";
+            });
+    </script>
+</body>
+</html>
