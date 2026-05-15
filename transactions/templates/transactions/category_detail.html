@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category.name }}</title>
+</head>
+<body>
+    <h1>Категорія: {{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+    <h2>Транзакції:</h2>
+    <ul>
+    {% for t in transactions %}
+        <li>{{ t.description }} - {{ t.amount }} ({{ t.transaction_type }})</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'categories' %}">Назад</a>
+</body>
+</html>

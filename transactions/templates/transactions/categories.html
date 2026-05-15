@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Категорії</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .category-list { list-style: none; padding: 0; }
+        .category-item { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        .category-item a { 
+            text-decoration: none; 
+            color: #333; 
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .category-item a:hover { color: #4CAF50; }
+        .count { color: #666; margin-left: 10px; }
+        .nav { margin: 20px 0; }
+        .nav a { margin-right: 15px; color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <h1>Категорії транзакцій</h1>
+    
+    <div class="nav">
+        <a href="{% url 'index' %}">Транзакції</a>
+        <a href="{% url 'budget' %}">Бюджет</a>
+        <a href="/admin/">Адмін-панель</a>
+    </div>
+
+    {% if categories %}
+        <ul class="category-list">
+        {% for cat in categories %}
+            <li class="category-item">
+                <a href="{% url 'category_detail' cat.id %}">{{ cat.name }}</a>
+                <span class="count">({{ cat.transaction_count|default:0 }} транзакцій)</span>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Категорій поки що немає. <a href="/admin/">Створіть їх в адмін-панелі</a></p>
+    {% endif %}
+</body>
+</html>

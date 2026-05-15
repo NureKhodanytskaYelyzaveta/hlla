@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Транзакції</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .filter-form { background: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #4CAF50; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .debit { color: red; }
+        .credit { color: green; }
+        .nav { margin: 20px 0; }
+        .nav a { margin-right: 15px; color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <h1>Транзакції</h1>
+    
+    <div class="nav">
+        <a href="{% url 'categories' %}">Категорії</a>
+        <a href="{% url 'budget' %}">Бюджет</a>
+        <a href="/admin/">Адмін-панель</a>
+    </div>
+
+    <form method="GET" class="filter-form">
+        <input type="text" name="search" value="{{ search }}" placeholder="Пошук...">
+        
+        <select name="category">
+            <option value="">Всі категорії</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if category_id == cat.id|stringformat:"s" %}selected{% endif %}>
+                {{ cat.name }}
+            </option>
+            {% endfor %}
+        </select>
+        
+        <select name="type">
+            <option value="">Всі типи</option>
+            <option value="debit" {% if transaction_type == 'debit' %}selected{% endif %}>Дебет</option>
+            <option value="credit" {% if transaction_type == 'credit' %}selected{% endif %}>Кредит</option>
+        </select>
+        
+        <select name="sort">
+            <option value="-created_at" {% if sort_by == '-created_at' %}selected{% endif %}>Нові спочатку</option>
+            <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Старі спочатку</option>
+            <option value="-amount" {% if sort_by == '-amount' %}selected{% endif %}>Сума (спадання)</option>
+            <option value="amount" {% if sort_by == 'amount' %}selected{% endif %}>Сума (зростання)</option>
+        </select>
+        
+        <button type="submit">Фільтрувати</button>
+    </form>
+
+    {% if transactions %}
+        <table>
+            <tr>
+                <th>Опис</th>
+                <th>Сума</th>
+                <th>Тип</th>
+                <th>Категорія</th>
+                <th>Дата</th>
+            </tr>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.description }}</td>
+                <td class="{% if t.transaction_type == 'debit' %}debit{% else %}credit{% endif %}">
+                    {{ t.amount }} грн
+                </td>
+                <td>{{ t.get_transaction_type_display }}</td>
+                <td>{{ t.category|default:"Без категорії" }}</td>
+                <td>{{ t.created_at|date:"d.m.Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Транзакцій не знайдено. <a href="/admin/">Додайте їх в адмін-панелі</a></p>
+    {% endif %}
+</body>
+</html>

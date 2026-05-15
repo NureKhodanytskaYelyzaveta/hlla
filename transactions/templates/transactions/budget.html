@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Бюджет</title>
+    <style>
+        .budget-card { padding: 20px; border-radius: 5px; margin: 10px 0; display: inline-block; margin-right: 20px; }
+        .income { background: #d4edda; }
+        .expenses { background: #f8d7da; }
+        .balance { background: #d1ecf1; }
+        .text-green { color: green; font-size: 24px; }
+        .text-red { color: red; font-size: 24px; }
+    </style>
+</head>
+<body>
+    <h1>Бюджетування</h1>
+
+    <div class="budget-card income">
+        <h3>Доходи</h3>
+        <p class="text-green">{{ income }} грн</p>
+    </div>
+    
+    <div class="budget-card expenses">
+        <h3>Витрати</h3>
+        <p class="text-red">{{ expenses }} грн</p>
+    </div>
+    
+    <div class="budget-card balance">
+        <h3>Баланс</h3>
+        {% if balance >= 0 %}
+            <p class="text-green">{{ balance }} грн</p>
+        {% else %}
+            <p class="text-red">{{ balance }} грн</p>
+        {% endif %}
+    </div>
+
+    <h2>По категоріях:</h2>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Категорія</th>
+            <th>Доходи</th>
+            <th>Витрати</th>
+        </tr>
+        {% for cat in categories %}
+        <tr>
+            <td>{{ cat.name }}</td>
+            <td style="color: green;">{{ cat.income_sum|default:"0" }} грн</td>
+            <td style="color: red;">{{ cat.expense_sum|default:"0" }} грн</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/">На головну</a>
+</body>
+</html>

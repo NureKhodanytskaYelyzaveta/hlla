@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Третій-четвертий рівень</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav id="navbar" class="hidden">
+            <span>Привіт, <strong id="username-display"></strong></span>
+            <div class="nav-buttons">
+                <button onclick="showSection('reviews')">Відгуки</button>
+                <button onclick="showSection('profile')">Профіль</button>
+                <button onclick="Auth.logout()" class="btn-danger">Вийти</button>
+            </div>
+        </nav>
+
+        <section id="auth-section">
+            <h2 id="auth-title">Вхід</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label>Логін:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="password" required>
+                </div>
+
+                <div id="register-fields" class="hidden">
+                    <div class="form-group">
+                        <label>Повне ім'я:</label>
+                        <input type="text" id="fullName">
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="email">
+                    </div>
+                </div>
+
+                <button type="submit" id="auth-btn">Увійти</button>
+            </form>
+
+            <p>
+                <span id="toggle-text">Немає акаунту?</span>
+                <a href="#" onclick="Auth.toggleMode()">Зареєструватися</a>
+            </p>
+        </section>
+
+        <section id="profile-section" class="hidden">
+            <h2>Мій профіль</h2>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label>Повне ім'я:</label>
+                    <input type="text" id="profile-fullName">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="profile-email">
+                </div>
+                <div class="form-group">
+                    <label>Новий пароль:</label>
+                    <input type="password" id="profile-password">
+                </div>
+                <button type="submit">Зберегти</button>
+            </form>
+        </section>
+
+        <section id="reviews-section" class="hidden">
+            <h2>Залишити відгук</h2>
+
+            <form id="review-form">
+                <div class="form-group">
+                    <label>Продукт/Послуга:</label>
+                    <input type="text" id="review-product" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Відгук:</label>
+                    <textarea id="review-text" rows="4" required></textarea>
+                </div>
+
+                <div style="text-align: left; margin: 15px 0;">
+                    <label style="display: inline-flex; align-items: center;">
+                        <input type="checkbox" id="review-bad">
+                        <span style="margin-left: 8px;">⚠️ Неякісний товар/послуга</span>
+                    </label>
+                </div>
+
+                <button type="submit">Опублікувати</button>
+            </form>
+
+            <h3>Всі відгуки</h3>
+            <div id="reviews-list"></div>
+        </section>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/reviews.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Auth.init();
+            Reviews.init();
+            Reviews.render();
+        });
+    </script>
+</body>
+</html>
